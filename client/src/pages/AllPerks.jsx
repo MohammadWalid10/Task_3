@@ -4,33 +4,30 @@ import { api } from '../api'
 
 export default function AllPerks() {
   
- 
   const [perks, setPerks] = useState([])
-
   const [searchQuery, setSearchQuery] = useState('')
-
- 
   const [merchantFilter, setMerchantFilter] = useState('')
-
- 
   const [uniqueMerchants, setUniqueMerchants] = useState([])
-
-  
   const [loading, setLoading] = useState(true)
-
-  
   const [error, setError] = useState('')
 
   // ==================== SIDE EFFECTS WITH useEffect HOOK ====================
 
- /*
- TODO: HOOKS TO IMPLEMENT
- * useEffect Hook #1: Initial Data Loading
- * useEffect Hook #2: Auto-search on Input Change
+  // TODO: HOOKS TO IMPLEMENT - DONE
+  // useEffect Hook #1: Initial Data Loading
+  useEffect(() => {
+    loadAllPerks()
+  }, [])
 
-*/
+  // useEffect Hook #2: Auto-search on Input Change
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      loadAllPerks()
+    }, 500)
 
-  
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery, merchantFilter])
+
   useEffect(() => {
     // Extract all merchant names from perks array
     const merchants = perks
@@ -105,11 +102,6 @@ export default function AllPerks() {
   
   
   return (
-    /*
-    TODO: HTML INPUT HANDLERS
- * Update state when user types in search box
- * update state when user selects filter
-    */
     <div className="max-w-6xl mx-auto space-y-6">
       
       {/* Page Title */}
@@ -136,7 +128,9 @@ export default function AllPerks() {
                 type="text"
                 className="input"
                 placeholder="Enter perk name..."
-                
+                // TODO: HTML INPUT HANDLERS - DONE
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <p className="text-xs text-zinc-500 mt-1">
                 Auto-searches as you type, or press Enter / click Search
@@ -151,7 +145,9 @@ export default function AllPerks() {
               </label>
               <select
                 className="input"
-                
+                // TODO: HTML INPUT HANDLERS - DONE
+                value={merchantFilter}
+                onChange={(e) => setMerchantFilter(e.target.value)}
               >
                 <option value="">All Merchants</option>
                 
@@ -217,7 +213,7 @@ export default function AllPerks() {
           
           <Link
             key={perk._id}
-           
+            to={`/perks/${perk._id}`}
             className="card hover:shadow-lg transition-shadow cursor-pointer"
           >
             {/* Perk Title */}
@@ -289,4 +285,3 @@ export default function AllPerks() {
     </div>
   )
 }
-
